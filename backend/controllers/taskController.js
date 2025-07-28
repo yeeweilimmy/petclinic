@@ -10,7 +10,7 @@ res.status(500).json({ message: error.message });
 } 
 };
 
-// Add Task Function:
+// Add Task Functiosn:
 const addTask = async (req, res) => {
     const { title, description, deadline } = req.body;
     try {
