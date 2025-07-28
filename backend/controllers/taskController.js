@@ -21,7 +21,7 @@ const addTask = async (req, res) => {
     }
     };
 
-// Update Tasks
+// Update Taskss
 
 const updateTask = async (req, res) => {
     const { title, description, completed, deadline } = req.body;
