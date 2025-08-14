@@ -24,6 +24,7 @@ const addTask = async (req, res) => {
   }
 };
 
+// Update appointment
 const updateTask = async (req, res) => {
   const { title, description, completed, deadline } = req.body;
   try {
@@ -40,6 +41,7 @@ const updateTask = async (req, res) => {
   }
 };
 
+// Delete appointment
 const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
