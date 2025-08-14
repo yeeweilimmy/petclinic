@@ -8,6 +8,7 @@ const getTasks = async (req, res) => {
   }
 };
 
+// Create appointment 
 const addTask = async (req, res) => {
   const { title, description, deadline } = req.body;
   try {
