@@ -4,6 +4,7 @@ import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 import { useAuth } from '../context/AuthContext';
 
+// Appointments list page
 const Tasks = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
