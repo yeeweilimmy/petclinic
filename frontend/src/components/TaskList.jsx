@@ -17,11 +17,15 @@ const TaskList = ({ tasks, setTasks, setEditingTask }) => {
 
   return (
     <div>
+      <h1 className="text-2xl font-bold mb-4">Appointment list</h1>
       {tasks.map((task) => (
         <div key={task._id} className="bg-gray-100 p-4 mb-4 rounded shadow">
           <h2 className="font-bold">{task.title}</h2>
           <p>{task.description}</p>
-          <p className="text-sm text-gray-500">Deadline: {new Date(task.deadline).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-500">
+            Scheduled: {new Date(task.deadline).toLocaleDateString()}{" "}
+            {new Date(task.deadline).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+          </p>
           <div className="mt-2">
             <button
               onClick={() => setEditingTask(task)}
