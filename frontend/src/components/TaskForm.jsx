@@ -55,14 +55,14 @@ const TaskForm = ({ tasks, setTasks, editingTask, setEditingTask }) => {
       <h1 className="text-2xl font-bold mb-4">{editingTask ? 'Edit Appointment' : 'Create Appointment'}</h1>
       <input
         type="text"
-        placeholder="Title"
+        placeholder="Reason for appointment"
         value={formData.title}
         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         className="w-full mb-4 p-2 border rounded"
       />
       <input
         type="text"
-        placeholder="Description"
+        placeholder="Brief description"
         value={formData.description}
         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
         className="w-full mb-4 p-2 border rounded"
