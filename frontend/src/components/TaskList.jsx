@@ -11,13 +11,13 @@ const TaskList = ({ tasks, setTasks, setEditingTask }) => {
       });
       setTasks(tasks.filter((task) => task._id !== taskId));
     } catch (error) {
-      alert('Failed to delete task.');
+      alert('Failed to delete appointment.');
     }
   };
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Appointment list</h1>
+      <h1 className="text-2xl font-bold mb-4">Appointments list</h1>
       {tasks.map((task) => (
         <div key={task._id} className="bg-gray-100 p-4 mb-4 rounded shadow">
           <h2 className="font-bold">{task.title}</h2>
