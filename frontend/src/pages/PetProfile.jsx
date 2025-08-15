@@ -1,69 +1,39 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+// import axiosInstance from '../axiosConfig';
+import PetProfileForm from '../components/PetProfileForm';
+import PetProfileList from '../components/PetProfileList'; // If you have this
 
-const PetProfile = ({ onSubmit }) => {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        age: '',
-        breed: '',
-    });
+const PetProfile = () => {
+    const [pets, setPets] = useState([]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+    useEffect(() => {
+        // Fetch all pet profiles when the page loads
+        axios.get('/api/pet-profiles').then(res => setPets(res.data));
+        // axios.get('http://localhost:5001/api/pet-profiles').then(res => setPets(res.data));
+    }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit && onSubmit(formData);
-        setFormData({ firstName: '', lastName: '', age: '', breed: '' });
+    const handleAddPet = async (petData) => {
+        const res = await axios.post('/api/pet-profiles', petData);
+        // const res = await axios.post('http://localhost:5001/api/pet-profiles', petData);
+        setPets([...pets, res.data]);
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded mb-6 max-w-md mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Create Pet Profile</h1>
-            <input
-                type="text"
-                name="firstName"
-                placeholder="Pet First Name"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full mb-4 p-2 border rounded"
-                required
-            />
-            <input
-                type="text"
-                name="lastName"
-                placeholder="Pet Last Name"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="w-full mb-4 p-2 border rounded"
-                required
-            />
-            <input
-                type="number"
-                name="age"
-                placeholder="Age"
-                value={formData.age}
-                onChange={handleChange}
-                className="w-full mb-4 p-2 border rounded"
-                min="0"
-                required
-            />
-            <input
-                type="text"
-                name="breed"
-                placeholder="Breed"
-                value={formData.breed}
-                onChange={handleChange}
-                className="w-full mb-4 p-2 border rounded"
-                required
-            />
-            <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
-                Create Profile
-            </button>
-        </form>
+        <div>
+            <PetProfileForm onSubmit={handleAddPet} />
+            <h2 className="text-xl font-bold mb-2">Pet Profiles</h2>
+            <PetProfileList pets={pets} />
+            {/* If you don't have PetProfileList.jsx, you can render inline:
+      <ul>
+        {pets.map((pet) => (
+          <li key={pet._id}>
+            {pet.firstName} {pet.lastName} — Age: {pet.age}, Breed: {pet.breed}
+          </li>
+        ))}
+      </ul>
+      */}
+        </div>
     );
 };
 
