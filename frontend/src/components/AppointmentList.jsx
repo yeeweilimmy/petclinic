@@ -33,9 +33,14 @@ const AppointmentList = ({ appointments, setAppointments, setEditingAppointment 
               <div className="bg-blue-50 border border-blue-200 rounded p-2 mb-2">
                 <span className="text-blue-800">
                   <strong>Patient:</strong> {
-                    appointment.petId
+                    // If petId is populated (object), use that data
+                    appointment.petId && typeof appointment.petId === 'object'
                       ? `(${appointment.petId.firstName} ${appointment.petId.lastName}, ${appointment.petId.age}, ${appointment.petId.breed})`
-                      : appointment.petName
+                      // Otherwise, use the stored pet data fields
+                      : appointment.petAge && appointment.petBreed
+                        ? `(${appointment.petName}, ${appointment.petAge}, ${appointment.petBreed})`
+                        // Fallback to just the pet name
+                        : appointment.petName
                   }
                 </span>
               </div>

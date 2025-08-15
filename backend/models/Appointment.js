@@ -6,9 +6,11 @@ const appointmentSchema = new mongoose.Schema({
     description: { type: String },
     completed: { type: Boolean, default: false },
     deadline: { type: Date },
-    // New fields for pet integration
+    // Pet integration fields
     petId: { type: mongoose.Schema.Types.ObjectId, ref: 'PetProfile' },
-    petName: { type: String } // Store pet name for easy display
+    petName: { type: String },
+    petAge: { type: Number },
+    petBreed: { type: String }
 });
 
 module.exports = mongoose.model('Appointment', appointmentSchema);

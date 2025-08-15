@@ -13,7 +13,7 @@ const getAppointments = async (req, res) => {
 
 // Create appointment 
 const addAppointment = async (req, res) => {
-  const { title, description, deadline, petId, petName } = req.body;
+  const { title, description, deadline, petId, petName, petAge, petBreed } = req.body;
   try {
     const appointment = await Appointment.create({
       userId: req.user.id,
@@ -21,8 +21,13 @@ const addAppointment = async (req, res) => {
       description,
       deadline: deadline,
       petId: petId || null,
-      petName: petName || null
+      petName: petName || null,
+      petAge: petAge || null,
+      petBreed: petBreed || null
     });
+
+    // Populate the pet data before returning
+    await appointment.populate('petId', 'firstName lastName age breed');
     res.status(201).json(appointment);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -31,7 +36,7 @@ const addAppointment = async (req, res) => {
 
 // Update appointment
 const updateAppointment = async (req, res) => {
-  const { title, description, completed, deadline, petId, petName } = req.body;
+  const { title, description, completed, deadline, petId, petName, petAge, petBreed } = req.body;
   try {
     const appointment = await Appointment.findById(req.params.id);
     if (!appointment) return res.status(404).json({ message: "Appointment not found" });
@@ -42,8 +47,13 @@ const updateAppointment = async (req, res) => {
     appointment.deadline = deadline || appointment.deadline;
     appointment.petId = petId !== undefined ? petId : appointment.petId;
     appointment.petName = petName !== undefined ? petName : appointment.petName;
+    appointment.petAge = petAge !== undefined ? petAge : appointment.petAge;
+    appointment.petBreed = petBreed !== undefined ? petBreed : appointment.petBreed;
 
     const updatedAppointment = await appointment.save();
+
+    // Populate the pet data before returning
+    await updatedAppointment.populate('petId', 'firstName lastName age breed');
     res.json(updatedAppointment);
   } catch (error) {
     res.status(500).json({ message: error.message });
