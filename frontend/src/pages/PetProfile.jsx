@@ -1,40 +1,47 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-// import axiosInstance from '../axiosConfig';
+import axiosInstance from '../axiosConfig';
+import { useAuth } from '../context/AuthContext';
 import PetProfileForm from '../components/PetProfileForm';
-import PetProfileList from '../components/PetProfileList'; // If you have this
+import PetProfileList from '../components/PetProfileList';
 
 const PetProfile = () => {
-    const [pets, setPets] = useState([]);
+  const { user } = useAuth();
+  const [pets, setPets] = useState([]);
 
-    useEffect(() => {
-        // Fetch all pet profiles when the page loads
-        axios.get('/api/pet-profiles').then(res => setPets(res.data));
-        // axios.get('http://localhost:5001/api/pet-profiles').then(res => setPets(res.data));
-    }, []);
-
-    const handleAddPet = async (petData) => {
-        const res = await axios.post('/api/pet-profiles', petData);
-        // const res = await axios.post('http://localhost:5001/api/pet-profiles', petData);
-        setPets([...pets, res.data]);
+  useEffect(() => {
+    const fetchPetProfiles = async () => {
+      try {
+        const response = await axiosInstance.get('/api/pet-profiles', {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setPets(response.data);
+      } catch (error) {
+        alert('Failed to fetch pet profiles.');
+      }
     };
 
-    return (
-        <div>
-            <PetProfileForm onSubmit={handleAddPet} />
-            <h2 className="text-xl font-bold mb-2">Pet Profiles</h2>
-            <PetProfileList pets={pets} />
-            {/* If you don't have PetProfileList.jsx, you can render inline:
-      <ul>
-        {pets.map((pet) => (
-          <li key={pet._id}>
-            {pet.firstName} {pet.lastName} — Age: {pet.age}, Breed: {pet.breed}
-          </li>
-        ))}
-      </ul>
-      */}
-        </div>
-    );
+    fetchPetProfiles();
+  }, [user]);
+
+  const handleAddPet = async (petData) => {
+    try {
+      const res = await axiosInstance.post('/api/pet-profiles', petData, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setPets([...pets, res.data]);
+    } catch (error) {
+      alert('Failed to create pet profile.');
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-6">
+      <PetProfileForm
+        onSubmit={handleAddPet}
+      />
+      <PetProfileList pets={pets} />
+    </div>
+  );
 };
 
 export default PetProfile;
