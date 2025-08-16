@@ -26,14 +26,28 @@ const Appointments = () => {
   }, [user]);
 
   return (
-    <div className="container mx-auto p-6">
-      <AppointmentForm
-        appointments={appointments}
-        setAppointments={setAppointments}
-        editingAppointment={editingAppointment}
-        setEditingAppointment={setEditingAppointment}
-      />
-      <AppointmentList appointments={appointments} setAppointments={setAppointments} setEditingAppointment={setEditingAppointment} />
+    <div className="min-h-screen bg-gradient-to-br from-cream via-lightBlue to-primaryBlue">
+      <div className="container mx-auto p-6">
+        {/* Header Section */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-darkNavy mb-2">Appointments</h1>
+          <p className="text-darkNavy opacity-70">Manage your pet's appointments</p>
+        </div>
+
+        <div className="max-w-6xl mx-auto space-y-8">
+          <AppointmentForm
+            appointments={appointments}
+            setAppointments={setAppointments}
+            editingAppointment={editingAppointment}
+            setEditingAppointment={setEditingAppointment}
+          />
+          <AppointmentList
+            appointments={appointments}
+            setAppointments={setAppointments}
+            setEditingAppointment={setEditingAppointment}
+          />
+        </div>
+      </div>
     </div>
   );
 };

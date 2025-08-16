@@ -9,6 +9,8 @@ const PetProfile = () => {
   const [pets, setPets] = useState([]);
   const [editingPet, setEditingPet] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [petToDelete, setPetToDelete] = useState(null);
 
   useEffect(() => {
     const fetchPetProfiles = async () => {
@@ -98,20 +100,28 @@ const PetProfile = () => {
     }
   };
 
-  const handleDeletePet = async (petId) => {
-    if (window.confirm('Are you sure you want to delete this pet profile? This will remove the pet from any associated appointments.')) {
+  const handleDeletePet = async () => {
+    if (petToDelete) {
       try {
-        await axiosInstance.delete(`/api/pet-profiles/${petId}`, {
+        await axiosInstance.delete(`/api/pet-profiles/${petToDelete}`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        setPets(pets.filter(pet => pet._id !== petId));
+        setPets(pets.filter(pet => pet._id !== petToDelete));
 
         // Dispatch event to notify other components
-        window.dispatchEvent(new CustomEvent('petDeleted', { detail: petId }));
+        window.dispatchEvent(new CustomEvent('petDeleted', { detail: petToDelete }));
+
+        setShowDeleteModal(false);
+        setPetToDelete(null);
       } catch (error) {
         alert('Failed to delete pet profile.');
       }
     }
+  };
+
+  const confirmDelete = (petId) => {
+    setPetToDelete(petId);
+    setShowDeleteModal(true);
   };
 
   const handleSubmit = (petData) => {
@@ -123,18 +133,71 @@ const PetProfile = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <PetProfileForm
-        onSubmit={handleSubmit}
-        editingPet={editingPet}
-        setEditingPet={setEditingPet}
-      />
-      <PetProfileList
-        pets={pets}
-        setEditingPet={setEditingPet}
-        onDeletePet={handleDeletePet}
-        loading={loading}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-cream via-lightBlue to-primaryBlue">
+      <div className="container mx-auto p-6">
+        {/* Header Section */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-darkNavy mb-2">Pet Profiles</h1>
+          <p className="text-darkNavy opacity-70">Manage your pet's information</p>
+        </div>
+
+        <div className="max-w-6xl mx-auto space-y-8">
+          <PetProfileForm
+            onSubmit={handleSubmit}
+            editingPet={editingPet}
+            setEditingPet={setEditingPet}
+          />
+          <PetProfileList
+            pets={pets}
+            setEditingPet={setEditingPet}
+            onDeletePet={confirmDelete}
+            loading={loading}
+          />
+        </div>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white max-w-md w-full mx-4 rounded-2xl shadow-large border border-lightBlue/20">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-lightBlue/20">
+              <div className="flex items-center space-x-3">
+                <h3 className="text-lg font-semibold text-darkNavy">Confirm Delete</h3>
+              </div>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="text-darkNavy hover:text-red text-xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              <p className="text-darkNavy leading-relaxed">
+                Are you sure you want to delete this pet profile? This will remove the pet from any associated appointments.
+              </p>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 pb-6 flex gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 bg-gray-500 text-white py-3 px-4 rounded-xl hover:bg-gray-600 transition-colors duration-200 font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeletePet}
+                className="flex-1 bg-red text-white py-3 px-4 rounded-xl hover:bg-red/80 transition-colors duration-200 font-medium"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
