@@ -48,19 +48,19 @@ const PetProfile = () => {
     };
 
     // Listen for pet deletions from other components
-    // const handlePetDeleted = (event) => {
-    //   const deletedPetId = event.detail;
-    //   setPets(prevPets => prevPets.filter(pet => pet._id !== deletedPetId));
-    // };
+    const handlePetDeleted = (event) => {
+      const deletedPetId = event.detail;
+      setPets(prevPets => prevPets.filter(pet => pet._id !== deletedPetId));
+    };
 
     window.addEventListener('petCreated', handlePetCreated);
     window.addEventListener('petUpdated', handlePetUpdated);
-    // window.addEventListener('petDeleted', handlePetDeleted);
+    window.addEventListener('petDeleted', handlePetDeleted);
 
     return () => {
       window.removeEventListener('petCreated', handlePetCreated);
       window.removeEventListener('petUpdated', handlePetUpdated);
-      // window.removeEventListener('petDeleted', handlePetDeleted);
+      window.removeEventListener('petDeleted', handlePetDeleted);
     };
   }, [user]);
 
@@ -96,21 +96,21 @@ const PetProfile = () => {
     }
   };
 
-  // const handleDeletePet = async (petId) => {
-  //   if (window.confirm('Are you sure you want to delete this pet profile? This will remove the pet from any associated appointments.')) {
-  //     try {
-  //       await axiosInstance.delete(`/api/pet-profiles/${petId}`, {
-  //         headers: { Authorization: `Bearer ${user.token}` },
-  //       });
-  //       setPets(pets.filter(pet => pet._id !== petId));
+  const handleDeletePet = async (petId) => {
+    if (window.confirm('Are you sure you want to delete this pet profile? This will remove the pet from any associated appointments.')) {
+      try {
+        await axiosInstance.delete(`/api/pet-profiles/${petId}`, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setPets(pets.filter(pet => pet._id !== petId));
 
-  //       // Dispatch event to notify other components
-  //       window.dispatchEvent(new CustomEvent('petDeleted', { detail: petId }));
-  //     } catch (error) {
-  //       alert('Failed to delete pet profile.');
-  //     }
-  //   }
-  // };
+        // Dispatch event to notify other components
+        window.dispatchEvent(new CustomEvent('petDeleted', { detail: petId }));
+      } catch (error) {
+        alert('Failed to delete pet profile.');
+      }
+    }
+  };
 
   const handleSubmit = (petData) => {
     if (editingPet) {
@@ -130,7 +130,7 @@ const PetProfile = () => {
       <PetProfileList
         pets={pets}
         setEditingPet={setEditingPet}
-        // onDeletePet={handleDeletePet}
+        onDeletePet={handleDeletePet}
         loading={loading}
       />
     </div>
