@@ -10,21 +10,23 @@ const PetProfile = () => {
   const [editingPet, setEditingPet] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchPetProfiles = async () => {
-    try {
-      const response = await axiosInstance.get('/api/pet-profiles', {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
-      setPets(response.data);
-    } catch (error) {
-      alert('Failed to fetch pet profiles.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchPetProfiles();
+    const fetchPetProfiles = async () => {
+      try {
+        const response = await axiosInstance.get('/api/pet-profiles', {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setPets(response.data);
+      } catch (error) {
+        alert('Failed to fetch pet profiles.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?.token) {
+      fetchPetProfiles();
+    }
 
     // Listen for pets created in other components (like AppointmentForm)
     const handlePetCreated = (event) => {
@@ -62,7 +64,7 @@ const PetProfile = () => {
       window.removeEventListener('petUpdated', handlePetUpdated);
       window.removeEventListener('petDeleted', handlePetDeleted);
     };
-  }, [user]);
+  }, [user?.token]);
 
   const handleAddPet = async (petData) => {
     try {

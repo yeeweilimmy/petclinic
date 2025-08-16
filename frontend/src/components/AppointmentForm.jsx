@@ -41,7 +41,9 @@ const AppointmentForm = ({ appointments, setAppointments, editingAppointment, se
   const fetchPets = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get('/api/pet-profiles');
+      const response = await axiosInstance.get('/api/pet-profiles', {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       setPets(response.data);
     } catch (error) {
       console.error('Failed to fetch pets:', error);
@@ -70,12 +72,18 @@ const AppointmentForm = ({ appointments, setAppointments, editingAppointment, se
       petBreed: pet.breed
     });
     setShowPetForm(false);
-    fetchPets();
+    // Add the new pet to local pets list
+    setPets(prevPets => [...prevPets, pet]);
+
+    // Trigger a custom event to notify other components about the new pet
+    window.dispatchEvent(new CustomEvent('petCreated', { detail: pet }));
   };
 
   const handleCreateNewPet = async (petData) => {
     try {
-      const response = await axiosInstance.post('/api/pet-profiles', petData);
+      const response = await axiosInstance.post('/api/pet-profiles', petData, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       handlePetCreated(response.data);
     } catch (error) {
       alert('Failed to create pet profile.');
@@ -118,6 +126,13 @@ const AppointmentForm = ({ appointments, setAppointments, editingAppointment, se
       alert('Failed to save appointment.');
     }
   };
+
+  // Get filtered pets for search
+  const filteredPets = pets.filter(pet =>
+    pet.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pet.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pet.breed.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
@@ -245,12 +260,6 @@ const AppointmentForm = ({ appointments, setAppointments, editingAppointment, se
                 <p className="text-center text-gray-500">Loading pets...</p>
               ) : (
                 (() => {
-                  const filteredPets = pets.filter(pet =>
-                    pet.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    pet.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    pet.breed.toLowerCase().includes(searchTerm.toLowerCase())
-                  );
-
                   return filteredPets.length === 0 ? (
                     <p className="text-center text-gray-500">No pets found</p>
                   ) : (
