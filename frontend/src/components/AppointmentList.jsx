@@ -32,9 +32,6 @@ const AppointmentList = ({ appointments, setAppointments, setEditingAppointment 
       <h1 className="text-2xl font-bold text-darkNavy mb-6">Appointments List</h1>
       {appointments.length === 0 ? (
         <div className="text-center py-12">
-          <div className="bg-lightBlue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl">📋</span>
-          </div>
           <p className="text-gray-500 text-lg">No appointments scheduled yet.</p>
           <p className="text-gray-400 text-sm mt-2">Create your first appointment above to get started.</p>
         </div>
@@ -85,7 +82,7 @@ const AppointmentList = ({ appointments, setAppointments, setEditingAppointment 
 
               <div className="bg-cream/50 border border-cream rounded-lg p-3">
                 <p className="text-darkNavy font-medium">
-                  <span className="text-gray-600">📅 Scheduled:</span> {new Date(appointment.deadline).toLocaleDateString()} at{" "}
+                  <span className="text-gray-600">Scheduled:</span> {new Date(appointment.deadline).toLocaleDateString()} at{" "}
                   {new Date(appointment.deadline).toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit',
