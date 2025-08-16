@@ -4,7 +4,7 @@ import axiosInstance from '../axiosConfig';
 import { useModal } from '../components/Modal';
 
 const Register = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { showSuccess, showError, ModalComponent } = useModal();
@@ -12,7 +12,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       await axiosInstance.post('/api/auth/register', formData);
       showSuccess('Registration successful! Redirecting to login page...', 'Welcome to Woof Vet Clinic');
@@ -41,23 +40,6 @@ const Register = () => {
           {/* Register Form */}
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-large p-8 border border-lightBlue/20">
             <div className="space-y-6">
-              {/* Name Input */}
-              <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-darkNavy mb-2">
-                  Full Name
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border-2 border-lightBlue/30 rounded-xl focus:border-primaryBlue focus:ring-0 outline-none transition-colors duration-200 text-darkNavy placeholder-gray-400"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-
               {/* Email Input */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-darkNavy mb-2">
@@ -97,8 +79,8 @@ const Register = () => {
                 type="submit"
                 disabled={isLoading}
                 className={`w-full py-3 px-4 rounded-xl font-semibold text-white transition-all duration-200 transform ${isLoading
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-primaryBlue hover:bg-darkNavy hover:shadow-medium hover:-translate-y-0.5 active:translate-y-0'
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-primaryBlue hover:bg-darkNavy hover:shadow-medium hover:-translate-y-0.5 active:translate-y-0'
                   }`}
               >
                 {isLoading ? (
@@ -107,7 +89,7 @@ const Register = () => {
                     <span>Creating account...</span>
                   </div>
                 ) : (
-                  'Create Account'
+                  'Register'
                 )}
               </button>
             </div>
