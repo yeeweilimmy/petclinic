@@ -7,6 +7,7 @@ router.post('/', protect, petProfileController.createPetProfile);
 router.get('/', protect, petProfileController.getPetProfiles);
 router.get('/:id', protect, petProfileController.getPetProfile);
 router.put('/:id', protect, petProfileController.updatePetProfile);
-// router.delete('/:id', protect, petProfileController.deletePetProfile);
+router.delete('/:id', protect, petProfileController.deletePetProfile);
 
 module.exports = router;
+

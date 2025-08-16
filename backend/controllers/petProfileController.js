@@ -56,7 +56,7 @@ exports.updatePetProfile = async (req, res) => {
             { new: true, runValidators: true }
         );
 
-        // Update associated appointments with new pet data
+        // Update associated appointments with new pet's data
         await Appointment.updateMany(
             { petId: req.params.id, userId: req.user.id },
             {
