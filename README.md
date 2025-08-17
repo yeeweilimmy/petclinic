@@ -1,26 +1,73 @@
-**Appointment Manager Application Overview:The appointment manager application is designed to help users efficiently manage their appointments and responsibilities by providing a user-friendly interface for creating, viewing, updating, and deleting appointments. It includes essential features such as secure user authentication, allowing individuals to sign up and log in to their accounts, as well as profile management to update personal information. With built-in validation such as input field validation and email validation, the application ensures a seamless user experience while enhancing productivity and organization in both personal and professional settings. **
+Veterinary Clinic Management System
+Description
+This is a web-based application to help veterinary clinics manage their daily operations.
+The current application assumes that this is a single-veterinarian clinic.
 
-**This apps **contain** the following features:**
+Implemented Features
+Appointment scheduling and management
+Pet profile management
+User authentication and profile management
 
-* Signup
-* Login
-* Logout
-* Update profile
-* Add appointments
-* View appointments
-* Update appointments
-* Delete appointments
+Planned Features (Not Yet Implemented)
+Medical record management
+Pet owner profile management
+Billing system for appointments and services
+Payment history
 
-**This **app**lication** is**almost **a** precompiled** app**. However, students will develop some features,**such as adding appointments, viewing appointments, updating appointments, and **deleting** appointments**. **Students** will interact with GitHub when they develop the features.**
+Future Improvements
+Veterinarian profile to allow for management of multiple veterinarians
+Veterinarian schedule management system
+Vaccination and appointment reminder system
+
+---
+
+Tech Stack
+Frontend: React, Axios, TailwindCSS, JavaScript
+Backend: Node.js
+Database: MongoDB
+Tools: Git (version control), GitHub, Jira (project tracking), draw.io (SysML diagrams), AWS EC2 instance
 
 ---
 
-**Prerequisite:** Please install the following software and create account in following web tools** **
+Links to this Application
+Live Server: [http://13.211.167.97](http://13.211.167.97)
+Local Server: [http://localhost:3000](http://localhost:3000)
 
-* **Nodejs [**[https://nodejs.org/en](https://nodejs.org/en)]** **
-* **Git [**[https://git-scm.com/](https://git-scm.com/)]** **
-* **VS code editor** [[https://code.visualstudio.com/](https://code.visualstudio.com/)]** **
-* **MongoDB Account** [[https://account.mongodb.com/account/login](https://account.mongodb.com/account/login)]** - In tutorial, we have also showed how can you create account and database: follow step number 2.**
-* **GitHub Account** [[https://github.com/signup?source=login](https://github.com/signup?source=login)]** **
+## Configuration / Setup Instructions
 
----
+### Prerequisites
+- Node.js (v18+ recommended)
+- npm (v9+ recommended)
+- MongoDB instance (local or cloud)
+- Git
+
+### Clone Repository
+git clone https://github.com/yeeweilimmy/petclinic.git
+
+### Backend Setup
+- cd backend
+- npm install
+- cp .env.example .env
+- .env file variables example:
+
+PORT=5001
+MONGO_URI=<your-mongodb-connection-string>
+JWT_SECRET=<your-secret-key>
+(Please find these copy pasted in the report, due to security reasons it is not included in this readme file)
+
+## To start the backend server:
+npm run dev   # development mode with nodemon
+# or
+npm run start # production mode
+
+## Frontend Setup
+- cd ../frontend
+- npm install
+- npm start
+- Open http://localhost:3000 in your browser
+
+Default Test User (if applicable)
+Username: vet@mail.com
+Password: 123
+
+Public server, follow URL link: http://13.211.167.97
