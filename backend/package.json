@@ -10,6 +10,7 @@
     "prod": "node server.js"
   },
   "dependencies": {
+    "appointment-manager": "file:..",
     "bcrypt": "^5.0.1",
     "chai": "^4.5.0",
     "chai-http": "^4.3.0",
@@ -19,8 +20,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^6.18.0",
     "mongoose": "^6.0.14",
-    "request": "^2.88.2",
-    "appointment-manager": "file:.."
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "esm": "^3.2.25",
